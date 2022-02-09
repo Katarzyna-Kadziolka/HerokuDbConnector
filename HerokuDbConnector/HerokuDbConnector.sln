@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HerokuDbConnector", "HerokuDbConnector\HerokuDbConnector.csproj", "{C95A3857-2D6E-40D5-86AE-3BE2A1EAA05C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HerokuDbConnector.Tests.Unit", "HerokuDbConnector.Tests.Unit\HerokuDbConnector.Tests.Unit.csproj", "{691BED20-1DF9-4587-BCCF-24358B9CF23A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{C95A3857-2D6E-40D5-86AE-3BE2A1EAA05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C95A3857-2D6E-40D5-86AE-3BE2A1EAA05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C95A3857-2D6E-40D5-86AE-3BE2A1EAA05C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{691BED20-1DF9-4587-BCCF-24358B9CF23A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{691BED20-1DF9-4587-BCCF-24358B9CF23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{691BED20-1DF9-4587-BCCF-24358B9CF23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{691BED20-1DF9-4587-BCCF-24358B9CF23A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
