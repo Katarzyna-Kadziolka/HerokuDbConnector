@@ -78,6 +78,7 @@ public class HerokuDbConnectorTests {
     [Test]
     public void Build_NullDatabaseUrl_ShouldThrowNullReferenceException() {
         // Arrange
+        Environment.SetEnvironmentVariable("DATABASE_URL", "");
         var herokuDbConnector = new HerokuDbConnector();
         // Act
         Action act = () => herokuDbConnector.Build();
