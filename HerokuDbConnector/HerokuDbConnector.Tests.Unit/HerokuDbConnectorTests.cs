@@ -6,11 +6,14 @@ using NUnit.Framework;
 namespace HerokuDbConnector.Tests.Unit;
 
 public class HerokuDbConnectorTests {
+    [SetUp]
+    public void Setup() {
+        Environment.SetEnvironmentVariable("DATABASE_URL", TestData.GetDbUrl());
+    }
 
     [Test]
-    public void Build_DefaultOptions_ShouldReturnString() {
+    public void Build_DefaultOptions_ShouldReturnConnectionStringWithDefaultValues() {
         // Arrange
-        Environment.SetEnvironmentVariable("DATABASE_URL", TestData.GetDbUrl());
         var herokuDbConnector = new HerokuDbConnector();
         // Act
         var connectionString = herokuDbConnector.Build();
@@ -25,7 +28,7 @@ public class HerokuDbConnectorTests {
         npgsqlConnectionStringBuilder.TrustServerCertificate.Should().BeTrue();
     }
     [Test]
-    public void Build_DatabaseUrl_ShouldReturnString() {
+    public void Build_DatabaseUrl_ShouldReturnConnectionStringWithGivenUrlValues() {
         // Arrange
         var databaseUrl = TestData.GetDbUrl();
         var herokuDbConnector = new HerokuDbConnector(o => o.DatabaseUrl = databaseUrl);
@@ -38,41 +41,31 @@ public class HerokuDbConnectorTests {
         npgsqlConnectionStringBuilder.Username.Should().Be(TestData.Username);
         npgsqlConnectionStringBuilder.Password.Should().Be(TestData.Password);
         npgsqlConnectionStringBuilder.Database.Should().Be(TestData.Database);
-        npgsqlConnectionStringBuilder.SslMode.Should().Be(SslMode.Require);
-        npgsqlConnectionStringBuilder.TrustServerCertificate.Should().BeTrue();
     }
     [Test]
-    public void Build_SslMode_ShouldReturnString() {
+    [TestCase(SslMode.Disable)]
+    [TestCase(SslMode.Allow)]
+    [TestCase(SslMode.Prefer)]
+    [TestCase(SslMode.Require)]
+    [TestCase(SslMode.VerifyFull)]
+    [TestCase(SslMode.VerifyCA)]
+    public void Build_SslMode_ShouldReturnConnectionStringWithGivenSslMode(SslMode mode) {
         // Arrange
-        Environment.SetEnvironmentVariable("DATABASE_URL", TestData.GetDbUrl());
-        var herokuDbConnector = new HerokuDbConnector(o => o.SslMode = SslMode.Allow);
+        var herokuDbConnector = new HerokuDbConnector(o => o.SslMode = mode);
         // Act
         var connectionString = herokuDbConnector.Build();
         // Assert
         var npgsqlConnectionStringBuilder = new NpgsqlConnectionStringBuilder(connectionString);
-        npgsqlConnectionStringBuilder.Host.Should().Be(TestData.Host);
-        npgsqlConnectionStringBuilder.Port.Should().Be(TestData.Port);
-        npgsqlConnectionStringBuilder.Username.Should().Be(TestData.Username);
-        npgsqlConnectionStringBuilder.Password.Should().Be(TestData.Password);
-        npgsqlConnectionStringBuilder.Database.Should().Be(TestData.Database);
-        npgsqlConnectionStringBuilder.SslMode.Should().Be(SslMode.Allow);
-        npgsqlConnectionStringBuilder.TrustServerCertificate.Should().BeTrue();
+        npgsqlConnectionStringBuilder.SslMode.Should().Be(mode);
     }
     [Test]
-    public void Build_TrustServerCertificate_ShouldReturnString() {
+    public void Build_TrustServerCertificate_ShouldReturnConnectionStringWithGivenTrustServerCertificate() {
         // Arrange
-        Environment.SetEnvironmentVariable("DATABASE_URL", TestData.GetDbUrl());
         var herokuDbConnector = new HerokuDbConnector(o => o.TrustServerCertificate = false);
         // Act
         var connectionString = herokuDbConnector.Build();
         // Assert
         var npgsqlConnectionStringBuilder = new NpgsqlConnectionStringBuilder(connectionString);
-        npgsqlConnectionStringBuilder.Host.Should().Be(TestData.Host);
-        npgsqlConnectionStringBuilder.Port.Should().Be(TestData.Port);
-        npgsqlConnectionStringBuilder.Username.Should().Be(TestData.Username);
-        npgsqlConnectionStringBuilder.Password.Should().Be(TestData.Password);
-        npgsqlConnectionStringBuilder.Database.Should().Be(TestData.Database);
-        npgsqlConnectionStringBuilder.SslMode.Should().Be(SslMode.Require);
         npgsqlConnectionStringBuilder.TrustServerCertificate.Should().BeFalse();
     }
     [Test]
@@ -83,6 +76,6 @@ public class HerokuDbConnectorTests {
         // Act
         Action act = () => herokuDbConnector.Build();
         // Assert
-        act.Should().Throw<NullReferenceException>().WithMessage("Database url has null reference");
+        act.Should().Throw<NullReferenceException>().WithMessage("Database url was null or empty. Provide a valid database url or use default");
     }
 }
