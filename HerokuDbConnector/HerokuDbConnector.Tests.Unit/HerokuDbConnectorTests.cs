@@ -27,6 +27,7 @@ public class HerokuDbConnectorTests {
         npgsqlConnectionStringBuilder.SslMode.Should().Be(SslMode.Require);
         npgsqlConnectionStringBuilder.TrustServerCertificate.Should().BeTrue();
     }
+
     [Test]
     public void Build_DatabaseUrl_ShouldReturnConnectionStringWithGivenUrlValues() {
         // Arrange
@@ -42,6 +43,7 @@ public class HerokuDbConnectorTests {
         npgsqlConnectionStringBuilder.Password.Should().Be(TestData.Password);
         npgsqlConnectionStringBuilder.Database.Should().Be(TestData.Database);
     }
+
     [Test]
     [TestCase(SslMode.Disable)]
     [TestCase(SslMode.Allow)]
@@ -58,6 +60,7 @@ public class HerokuDbConnectorTests {
         var npgsqlConnectionStringBuilder = new NpgsqlConnectionStringBuilder(connectionString);
         npgsqlConnectionStringBuilder.SslMode.Should().Be(mode);
     }
+
     [Test]
     public void Build_TrustServerCertificate_ShouldReturnConnectionStringWithGivenTrustServerCertificate() {
         // Arrange
@@ -68,14 +71,32 @@ public class HerokuDbConnectorTests {
         var npgsqlConnectionStringBuilder = new NpgsqlConnectionStringBuilder(connectionString);
         npgsqlConnectionStringBuilder.TrustServerCertificate.Should().BeFalse();
     }
+
     [Test]
-    public void Build_NullDatabaseUrl_ShouldThrowNullReferenceException() {
+    [TestCase("")]
+    [TestCase(null)]
+    public void Build_InvalidEnvironmentVariableAndDefaultDatabaseUrlOptions_ShouldThrowNullReferenceException(
+        string databaseUrl) {
         // Arrange
-        Environment.SetEnvironmentVariable("DATABASE_URL", "");
+        Environment.SetEnvironmentVariable("DATABASE_URL", databaseUrl);
         var herokuDbConnector = new HerokuDbConnector();
         // Act
         Action act = () => herokuDbConnector.Build();
         // Assert
-        act.Should().Throw<NullReferenceException>().WithMessage("Database url was null or empty. Provide a valid database url or use default");
+        act.Should().Throw<NullReferenceException>()
+            .WithMessage("Database url was null or empty. Provide a valid database url or use default");
+    }
+    [Test]
+    [TestCase("")]
+    [TestCase(null)]
+    public void Build_InvalidDatabaseUrl_ShouldThrowNullReferenceException(
+        string databaseUrl) {
+        // Arrange
+        var herokuDbConnector = new HerokuDbConnector(o => o.DatabaseUrl = databaseUrl);
+        // Act
+        Action act = () => herokuDbConnector.Build();
+        // Assert
+        act.Should().Throw<NullReferenceException>()
+            .WithMessage("Database url was null or empty. Provide a valid database url or use default");
     }
 }
