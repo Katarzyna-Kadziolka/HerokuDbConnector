@@ -1,3 +1,5 @@
+[![https://www.nuget.org/packages/HerokuDbConnector/](https://img.shields.io/nuget/v/HerokuDbConnector?style=plastic/)](https://www.nuget.org/packages/HerokuDbConnector/)
+
 # HerokuDbConnector
 
 Connect to your Heroku DB easily.
@@ -14,7 +16,7 @@ Made with .Net 6
 ### Usage
 **Configuration**
 
-1. Add Nuget package from [here]().
+Add Nuget package from [here](https://www.nuget.org/packages/HerokuDbConnector/).
 
 #### ASP
 
