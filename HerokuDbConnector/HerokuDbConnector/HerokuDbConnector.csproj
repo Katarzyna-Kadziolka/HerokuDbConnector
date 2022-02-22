@@ -4,6 +4,12 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Authors>Katarzyna-Kadziolka</Authors>
+        <Description>Connect to your Heroku DB easily.</Description>
+        <PackageProjectUrl>https://github.com/Katarzyna-Kadziolka/HerokuDbConnector</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/Katarzyna-Kadziolka/HerokuDbConnector/main/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/Katarzyna-Kadziolka/HerokuDbConnector</RepositoryUrl>
+        <PackageTags>Heroku, PostgreSQL</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>

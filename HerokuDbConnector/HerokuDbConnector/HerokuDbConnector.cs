@@ -3,13 +3,14 @@
 namespace HerokuDbConnector;
 
 public class HerokuDbConnector {
-    private HerokuDbConnectionOption _dbOption = new HerokuDbConnectionOption();
+    private readonly HerokuDbConnectionOption _dbOption = new();
     public HerokuDbConnector(Action<HerokuDbConnectionOption>? optionAction = null) {
         optionAction?.Invoke(_dbOption);
     }
     public string Build() {
         if (string.IsNullOrEmpty(_dbOption.DatabaseUrl)) {
-            throw new NullReferenceException("Database url has null reference");
+            throw new NullReferenceException(
+                "Database url was null or empty. Provide a valid database url or use default");
         }
         var databaseUri = new Uri(_dbOption.DatabaseUrl);
         var userInfo = databaseUri.UserInfo.Split(':');
