@@ -1,32 +1,38 @@
 # HerokuDbConnector
 
-A simple library that facilitates the creation of a connection string with the PostgreSQL database in the Heroku cloud.
+Connect to your Heroku DB easily.
 
 Made with .Net 6
 
 -> [Changelog](https://github.com/Katarzyna-Kadziolka/HerokuDbConnector/blob/main/CHANGELOG.md)
 
 ### Features
-- building connection string with default values:
-    - database Url is getting from environment variable with key `DATABASE_URL`
-    - `SslMode` is set on `Require`
-    - `TrustServerCertification` is set on `true`
-- possibility to modify options:
-    - database Url
-    - `SslMode`
-    - `TrustServerCertification`
+- connect to Heroku DB using:
+  - environment variable `DATABASE_URL` (default)
+  - manually passed Url
 
 ### Usage
 **Configuration**
 
 1. Add Nuget package from [here]().
-2. In startup of your project:
+
+#### ASP
+
 ```csharp
 public void ConfigureServices(IServiceCollection services) {
-    var herokuDbConnector = new HerokuDbConnector();
-	services.AddApplicationDbContext(herokuDbConnector.Build();)
+    services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(new HerokuDbConnector().Build()));
 }
 ```
+
+#### Console
+
+```csharp
+var connector = new HerokuDbConnector();
+Console.WriteLine(connector.Build());
+
+// Output: Host=ab1-11-123-12-123.eu-west-1.compute.amazonaws.com;Port=1234;Username=aaaaaaaaaaaaaa;Password=000000000000000000000000000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;Database=aaaaaaaaaaaaaa;SSL Mode=Require;Trust Server Certificate=True 
+```
+
 ### Development
 I am happy to accept suggestions for further development. Please feel free to add Issues :)
 

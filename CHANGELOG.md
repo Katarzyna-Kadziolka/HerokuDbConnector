@@ -8,4 +8,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - building connection string
-- optional options: DatabaseUrl, Ssl Mode, Trust Server Certification
+- options: DatabaseUrl, Ssl Mode, Trust Server Certification
